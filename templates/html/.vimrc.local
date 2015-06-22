@@ -1,0 +1,3 @@
+:silent :e index.html
+:silent :vs js/main.js
+:silent :vs css/main.css
