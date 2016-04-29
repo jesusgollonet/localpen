@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 # run with source so you cd in your current session instead of a subshell
 # copy template
 # cd into directory
@@ -7,37 +8,34 @@
 # open vim
 
 create_dirname(){
-    local prefix=htmlpen
-    local suffix=$(date +%s)  # "+%s" seconds from unix 
-    local dirname=$prefix"_"$suffix
-    echo $dirname
+    local prefix suffix dirname
+    prefix=htmlpen
+    suffix="$(date +%s)"  # "+%s" seconds from unix 
+    dirname=$prefix"_"$suffix
+    echo "$dirname"
 }
 
 copy_html_template_to(){
-    echo 'copying html template'
-    echo $dirname
-    cp -r templates/html/ $1
+    local dirname=$1
+    echo "copying html template to $dirname"
+    cp -r templates/html/. "$dirname"
 }
 
 cd_to(){
-    echo 'cding to '
-    ls $1
-    echo $1
-    cd $1 
-}
-open_vi(){
-    vi .
+    local dirname
+    dirname=$1
+    echo "cd to $dirname"
+    cd "$dirname" || exit
 }
 
 main(){
    echo 'creating pen' 
-   local dirname=$(create_dirname)
-   copy_html_template_to $dirname
-   cd_to $dirname
-   open_vi
+   local dirname
+   dirname=$(create_dirname)
+   copy_html_template_to "$dirname"
+   cd_to "$dirname"
+   $EDITOR .
    echo "dirname ____  $dirname"
-   #copyTemplate
 }
-
 
 main
